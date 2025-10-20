@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des livres{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">📚 Liste des livres</h1>
+
+    <div class="text-end mb-3">
+        <a href="{{ path('book_new') }}" class="btn btn-success">➕ Ajouter un livre</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Titre</th>
+                <th>Date de publication</th>
+                <th>Auteur</th>
+                <th>Publié ?</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publicationDate ? book.publicationDate|date('d/m/Y') : '-' }}</td>
+                    <td>{{ book.author ? book.author.username : '—' }}</td>
+                    <td>
+                        {% if book.published %}
+                            ✅ Oui
+                        {% else %}
+                            ❌ Non
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('book_show', {'id': book.id}) }}" class="btn btn-sm btn-info">👁️ Voir</a>
+                        <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-sm btn-primary">✏️ Modifier</a>
+                        <a href="{{ path('book_delete', {'id': book.id}) }}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
+                           🗑️ Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun livre trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

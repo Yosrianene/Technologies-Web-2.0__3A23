@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des livres{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">📊 Statistiques des livres</h1>
+
+    <div class="mb-4">
+        <h4>Total des livres : {{ nbrBooks }}</h4>
+    </div>
+
+    <h4>Livres par auteur :</h4>
+    {% if booksByAuthor is not empty %}
+        <table class="table table-bordered table-striped mt-2">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Date de publication</th>
+                    <th>Auteur</th>
+                    <th>Publié ?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in booksByAuthor %}
+                    <tr>
+                        <td>{{ book.id }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.publicationDate ? book.publicationDate|date('d/m/Y') : '-' }}</td>
+                        <td>{{ book.author.username }}</td>
+                        <td>{{ book.published ? '✅ Oui' : '❌ Non' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun livre trouvé pour cet auteur.</p>
+    {% endif %}
+
+    <div class="mt-3">
+        <a href="{{ path('book_list') }}" class="btn btn-secondary">⬅️ Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}
